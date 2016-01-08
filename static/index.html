@@ -46,8 +46,8 @@
                </form>
             </div>
          </div>
+         <div id="result"></div>
       </div>
-      <div id="result"></div>
       <!-- Bootstrap core JavaScript
          ================================================== -->
       <!-- Placed at the end of the document so the pages load faster -->
@@ -93,6 +93,7 @@
                     table.clear();
                     table.rows.add(data.rows);
                     table.draw();
+                    table.scrollTop();
                         },
                 failure: function(errMsg) {
                    alert(errMsg);
