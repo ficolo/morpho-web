@@ -28,6 +28,10 @@ sp = freeling.splitter(DATA + LANG + "/splitter.dat");
 mf = freeling.maco(op);
  
 def decode_tag(tag):
+    """
+       Función para decodificar y extender las etiquetas
+       generadas por Freeling en codificación EAGLES
+    """
     categoria = tag[0]
     decoded = "Esta palabra pertenece a la categoría {} ".format(EAGLES_DICT[categoria]['Categoria'])
 
@@ -60,7 +64,10 @@ def root():
 
 @app.route('/analyze', methods=['POST'])
 def analyze():
-    """"""
+    """
+      Función para analizar morfológicamente
+      los palabras de un texto en español
+    """
     columns = [
             { 'title': "Palabra" },
             { 'title': "Lema" },
