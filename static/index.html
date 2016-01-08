@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" href="http://www.univalle.edu.co/templates/t3_bs3_blank/favicon.ico">
+      <link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css"/>
+      <title>Analizador morfológico de textos en Español</title>
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+      <!-- Optional theme -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+      <!-- Custom styles for this template -->
+      <link href="static/starter-template.css" rel="stylesheet">
+      <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+      <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+   </head>
+   <body>
+      <div class="container">
+         <div class="starter-template">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Univalle.svg/439px-Univalle.svg.png" />
+            <h1>Analizador morfológico de textos en Español</h1>
+            <p class="lead">Federico López Gómez - Juan Camilo Rada Mesa</p>
+            <h5>Procesamiento del Lenguaje Natural <br /> Fundamentos de Comptuación Inteligente <br /> Escuela de Ingeniería de Sistemas y Computación</h5>
+         </div>
+         <!-- /.container -->
+         <div class="panel panel-default">
+            <div class="panel-heading">
+               <h3 class="panel-title">Ingrese el texto a analizar</h3>
+            </div>
+            <div class="panel-body">
+               <form role="form" action="/analyze">
+                  <div class="form-group">
+                     <textarea rows="20" class="form-control" id="textarea"></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-lg btn-primary">Enviar</button>
+               </form>
+            </div>
+         </div>
+      </div>
+      <div id="result"></div>
+      <!-- Bootstrap core JavaScript
+         ================================================== -->
+      <!-- Placed at the end of the document so the pages load faster -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+      <script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+      <!-- Latest compiled and minified JavaScript -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+      <script>
+         $(document).ready(function() {
+          $('#result').html('<table id="table-output" class="display" cellspacing="0" width="100%"></table>');
+          
+          var table_config = {
+              "bDestroy": true,
+              "paging": true,
+              "language": {
+                  "zeroRecords": "No results found",
+                  "processing": "<div align='center'><img src='/static/ajax-loader.gif'></div>",
+                  "loadingRecords": "<div align='center'><img src='/static/ajax-loader.gif'></div>"
+              }
+          };  
+          $( "form" ).submit(function( event ) {
+            // Stop form from submitting normally
+              event.preventDefault();
+             
+              // Get some values from elements on the page:
+              var $form = $( this ),
+                term = $("#textarea").val(),
+                url = $form.attr( "action" );
+              console.log(term);
+              $.ajax({
+                type: "POST",
+                url: url,
+                // The key needs to match your method's input parameter (case-sensitive).
+                data: JSON.stringify({ text: term }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function(data){
+                    $('#result').html('<table id="table-output" class="display" cellspacing="0" width="100%"></table>');
+ 
+                    table_config.columns = data.columns;
+ 
+                    var table = $('#table-output').DataTable(table_config);
+                    table.clear();
+                    table.rows.add(data.rows);
+                    table.draw();
+                        },
+                failure: function(errMsg) {
+                   alert(errMsg);
+               }
+          });
+        });
+      });          
+      </script>
+   </body>
+</html>
