@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 GENERO = {'atr': 'Género', 'values': {'M': 'Masculino', 'F': 'Femenino', 'C': 'Común', 'N': 'Neutro'}}
 NUMERO = {'atr': 'Número', 'values': {'S': 'Singular', 'P': 'Plural', 'N': 'Invariable'}}
 GRADO = {'atr': 'Grado', 'values': {'A': 'Aumentativo', 'D': 'Diminutivo', 'C': 'Comparativo', 'S': 'Superlativo'}}
